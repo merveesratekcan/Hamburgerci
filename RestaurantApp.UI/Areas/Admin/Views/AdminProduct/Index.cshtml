@@ -1,0 +1,243 @@
+﻿@using RestaurantApp.UI.Areas.Admin.Models.ProductVMs
+@model IEnumerable<ProductListVM>
+
+@{
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <h4 class="card-title">@Localizer["Products"]</h4>
+                                    <p class="card-subtitle mb-4">@Localizer["You can add new products, update or delete them."]</p>
+                                    <p>
+                                        <a asp-controller="AdminProduct" asp-action="Create" asp-area="Admin" data-toggle="modal" data-target="#createModal" class="btn btn-outline-info btn-lg btn-block waves-effect waves-light">@Localizer["Create New"]</a>
+                                    </p>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>@Localizer["Image"]</th>
+                                                    <th>@Localizer["Name"]</th>
+                                                    <th>@Localizer["Description"]</th>
+                                                    <th>@Localizer["Price"]</th>
+                                                    <th>@Localizer["Category Name"]</th>
+                                                    <th>@Localizer["Ingredients"]</th>
+                                                    <th>@Localizer["Actions"]</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @if (item.Image is null)
+                                                            {
+                                                                <p style="color:red; font-weight:bold;">No Image</p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <img style="height: 50px; width: auto; object-fit: cover" src="@($"data:image/jpg;base64,{Convert.ToBase64String(item.Image)}")" />
+                                                            }
+                                                        </td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                                                        <td>
+                                                            @if (item.Ingredients != null && item.Ingredients.Any())
+                                                            {
+                                                                foreach (var ingredient in item.Ingredients)
+                                                                {
+                                                                    <span>
+                                                                        @ingredient.IngredientName @if (ingredient.IsOptional)
+                                                                        {
+                                                                            <span>(optional)</span>
+                                                                        }
+                                                                    </span>
+                                                                    <br />
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>No Ingredients</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-outline-success btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#updateModal" data-id="@item.Id" data-name="@item.Name" data-description="@item.Description" data-price="@item.Price" data-image="@item.Image" data-categoryname="@item.CategoryName" data-ingredientname="@item.Ingredients">@Localizer["Update"]</button>
+                                                            <button class="btn btn-outline-danger btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#deleteModal" data-id="@item.Id">@Localizer["Delete"]</button>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteModalLabel">@Localizer["Delete Category"]</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="post" asp-action="Delete">
+                                                            <input type="hidden" id="deleteProductId" name="Id" value="" />
+                                                            <p>@Localizer["Are you sure you want to delete this product?"]</p>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                                                            <button type="submit" class="btn btn-danger">@Localizer["Delete"]</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Create Modal -->
+                                        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="createModalLabel"> @Localizer["Create"]</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        @await Html.PartialAsync("/Areas/Admin/Views/AdminProduct/Partials/_CreatePartial.cshtml", new ProductCreateVM())
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Update Modal -->
+                                        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="updateModalLabel">@Localizer["Update"]</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        @await Html.PartialAsync("/Areas/Admin/Views/AdminProduct/Partials/_UpdatePartial.cshtml", new ProductUpdateVM())
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Modal içeriğini yüklüyor burada
+        $('#createModal').on('show.bs.modal', function (event) {
+            $.get('@Url.Action("Create", "AdminProduct", new { area = "Admin" })', function (data) {
+                $('#createModal .modal-body').html(data);
+            });
+        });
+
+        // Modal kapandığında içeriği temizliyor burada
+        $('#createModal').on('hidden.bs.modal', function () {
+            $('#createModal .modal-body').html('');
+        });
+
+        // Formun ajax göndermesi
+        $(document).on('submit', 'form[asp-action="Create"]', function (event) {
+            event.preventDefault();
+
+            var form = $(this);
+            var formData = new FormData(this);
+
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        $('#createModal').modal('hide');
+                        location.reload(); // Sayfayı yeniden yükler
+                    } else {
+                        $('#createModal .modal-body').html(response);
+                    }
+                }
+            });
+        });
+
+        // Update Modal içeriğini dinamik olarak yüklüyor
+        $('#updateModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+
+            $.get('@Url.Action("Update", "AdminProduct", new { area = "Admin" })', { id: id }, function (data) {
+                $('#updateModal .modal-body').html(data);
+            });
+        });
+
+        // Update Modal kapandığında içeriği temizliyor
+        $('#updateModal').on('hidden.bs.modal', function () {
+            $('#updateModal .modal-body').html('');
+        });
+
+        // Update formunun ajax ile gönderiyor
+        $(document).on('submit', 'form[asp-action="Update"]', function (event) {
+            event.preventDefault();
+
+            var form = $(this);
+            var formData = new FormData(this);
+
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        $('#updateModal').modal('hide');
+                        location.reload(); // Sayfayı yeniden yükler
+                    } else {
+                        $('#updateModal .modal-body').html(response);
+                    }
+                }
+            });
+        });
+
+        // Delete Modal içeriğini yüklüyor burada
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var modal = $(this);
+            modal.find('.modal-body #deleteProductId').val(id);
+        });
+
+
+
+    </script>
+
+}

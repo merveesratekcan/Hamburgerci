@@ -1,0 +1,104 @@
+﻿@model RestaurantApp.UI.Areas.Admin.Models.AdminVMs.AdminAdminListVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+@inject IHtmlLocalizer<ModelResource> Localizer;
+
+
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-flex align-items-center justify-content-between">
+                                <h4 class="mb-0 font-size-18">@Localizer["Admin Update Page"]</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="clearfix">
+                                        <div class="float-left">
+                                            <h4><b>@Localizer["Admin"]</b></h4>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row mt-4">
+                                        <div class="col-6">
+                                            @* <h6 class="font-weight-bold">TO:</h6> *@
+                                            <address class="line-h-24">
+
+                                                <b>@Localizer["First Name"]:</b> @Html.DisplayFor(model => model.FirstName)
+                                                <br>
+                                                <b>@Localizer["Last Name"]:</b> @Html.DisplayFor(model => model.LastName)
+                                                <br>
+                                                <b>@Localizer["Email Address"]:</b> @Html.DisplayFor(model => model.Email)
+                                                <br>
+
+                                                <br>
+                                                <div>
+                                                    3443 MelodyBurger<br>
+                                                    İstanbul, KS 67501<br>
+                                                    <abbr title="Phone">@Localizer["Phone"]:</abbr> 620-802-9649
+                                                </div>
+                                            </address>
+                                        </div><!-- end col -->
+                                    </div>
+
+                                    <!-- end row -->
+
+                                    <div class="d-print-none my-4">
+                                        <div class="text-right">
+                                            <a class="btn btn-primary waves-effect waves-light" href="@Url.Action("Update",new {id = Model.Id})">@Localizer["Update"]</a>
+                                            @* <a class="btn btn-info waves-effect waves-light" href="@Url.Action("Create", new{id=Model.Id})">Create</a> *@
+                                            <a class="btn btn-info waves-effect waves-light" href="@Url.Action("ChangePassword", new{id=Model.Id})">@Localizer["Change Password"]</a>
+
+
+                                            @*                                                 <a asp-controller="Admin" asp-action="Update" asp-area="Admin" class="btn btn-primary waves-effect waves-light">@Localizer["Update"]</a>
+
+                                            <a asp-controller="Home" asp-action="Index" asp-area="Admin" class="btn btn-info waves-effect waves-light">@Localizer["Main Page"]</a> *@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- end card-->
+                        </div> <!-- end col -->
+                    </div>
+                    <!-- end row -->
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+
+
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+    <!-- Overlay-->
+    <div class="menu-overlay"></div>
+
+
+
+
+</body>
+

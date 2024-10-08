@@ -1,0 +1,13 @@
+﻿@model RestaurantApp.UI.Areas.Admin.Models.IngredientVMs.AdminIngredientUpdateVM
+
+<form method="post" asp-action="Update">
+    <input type="hidden" id="updateIngredientId" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">@Localizer["Name"]</label>
+        <input id="updateIngredientName" asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+</form>

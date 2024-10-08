@@ -1,0 +1,8 @@
+﻿@using RestaurantApp.UI
+@using RestaurantApp.UI.Models
+@using RestaurantApp.UI.Areas.Admin.Models;
+@using Microsoft.AspNetCore.Mvc.Localization;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@inject IHtmlLocalizer<ModelResource> Localizer;

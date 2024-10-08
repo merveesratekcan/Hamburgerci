@@ -1,0 +1,177 @@
+﻿@* @model RestaurantApp.UI.Areas.Admin.Models.CampaignVMs.AdminCampaignCreateVM
+@{
+    var today = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+}
+
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">@Localizer["Name"]</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label">@Localizer["Description"]</label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Discount" class="control-label">@Localizer["Discount"]</label>
+        <input asp-for="Discount" class="form-control" />
+        <span asp-validation-for="Discount" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewImage" class="control-label" style="font-weight:bold;">@Localizer["Image"]</label>
+        <input type="file" asp-for="NewImage" class="form-control" style="border-radius:5px;" />
+        <span asp-validation-for="NewImage" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartDate" class="control-label">@Localizer["Start Date"]</label>
+        <input asp-for="StartDate" value="@today" class="form-control" type="datetime-local" id="createCampaignStartDate" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EndDate" class="control-label">@Localizer["End Date"]</label>
+        <input asp-for="EndDate" value="@today" class="form-control" type="datetime-local" id="createCampaignEndDate" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Products" class="control-label" style="font-weight:bold;">@Localizer["Products"]</label>
+        <div>
+            @foreach (var item in Model.Products)
+            {
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="SelectedProducts" value="@item.Value" /> @item.Text
+                    </label>
+                </div>
+            }
+        </div>
+        <span asp-validation-for="SelectedProducts" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+</form>
+
+<div class="modal fade" id="dateValidationModal" tabindex="-1" role="dialog" aria-labelledby="dateValidationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dateValidationModalLabel">Tarih Hatası</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bitiş tarihi, başlangıç tarihinden önce olamaz. Lütfen geçerli bir tarih aralığı girin.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tamam</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var now = new Date();
+            var formattedDateTime = now.toISOString().slice(0, 16);
+
+            $('#createCampaignStartDate').val(formattedDateTime);
+            $('#createCampaignEndDate').val(formattedDateTime);
+
+            $('form').on('submit', function (e) {
+                var startDate = new Date($('#createCampaignStartDate').val());
+                var endDate = new Date($('#createCampaignEndDate').val());
+                var now = new Date();
+
+                if (endDate <= startDate) {
+                    e.preventDefault();
+                    $('#dateValidationMessage').text('The campaign end date must be after the start date!');
+                    $('#dateValidationModal').modal('show');
+                } else if (startDate < now) {
+                    e.preventDefault();
+                    $('#dateValidationMessage').text('The campaign cannot be applied retroactively!');
+                    $('#dateValidationModal').modal('show');
+                }
+            });
+        });
+    </script>
+} *@
+
+                    @model RestaurantApp.UI.Areas.Admin.Models.CampaignVMs.AdminCampaignCreateVM
+
+
+
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Discount" class="control-label"></label>
+        <input asp-for="Discount" class="form-control" />
+        <span asp-validation-for="Discount" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewImage" class="control-label" style="font-weight:bold;">Resim</label>
+        <input type="file" asp-for="NewImage" class="form-control" style="border-radius:5px;" />
+        <span asp-validation-for="NewImage" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartDate" class="control-label"></label>
+        <input asp-for="StartDate" class="form-control" type="datetime-local" id="StartDate" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EndDate" class="control-label"></label>
+        <input asp-for="EndDate" class="form-control" type="datetime-local" id="EndDate" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Products" class="control-label" style="font-weight:bold;">Products</label>
+        <div>
+            @foreach (var item in Model.Products)
+            {
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="SelectedProducts" value="@item.Value" /> @item.Text
+                    </label>
+                </div>
+            }
+        </div>
+        <span asp-validation-for="SelectedProducts" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+
+
+</form>
+
+

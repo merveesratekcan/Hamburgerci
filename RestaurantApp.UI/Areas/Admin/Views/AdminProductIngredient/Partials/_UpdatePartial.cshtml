@@ -1,0 +1,34 @@
+﻿@model RestaurantApp.UI.Areas.Admin.Models.ProductIngredientVMs.AdminProductIngredientUpdateVM
+
+<form asp-action="Update" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+
+     <div class="form-group">
+        <label asp-for="ProductId" class="control-label">Products</label>
+        <select asp-for="ProductId" asp-items="@Model.Products" class="form-control">
+            <option value="">---Select---</option>
+        </select>
+        <span asp-validation-for="ProductId" class="text-danger"></span>
+    </div> 
+    <div class="form-group">
+        <label asp-for="IngredientsId" class="control-label">Ingredients</label>
+        <select asp-for="IngredientsId" asp-items="@Model.Ingredients" class="form-control">
+            <option value="">---Select---</option>
+        </select>
+        <span asp-validation-for="IngredientsId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsOptional" class="control-label">Is Optional</label>
+        <input asp-for="IsOptional" class="form-control" />
+        <span asp-validation-for="IsOptional" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IngredientPrice" class="control-label">Price</label>
+        <input asp-for="IngredientPrice" class="form-control" />
+        <span asp-validation-for="IngredientPrice" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

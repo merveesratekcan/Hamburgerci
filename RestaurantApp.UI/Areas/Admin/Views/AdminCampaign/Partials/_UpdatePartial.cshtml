@@ -1,0 +1,149 @@
+﻿@* @model RestaurantApp.UI.Areas.Admin.Models.CampaignVMs.AdminCampaignUpdateVM
+
+
+<form method="post" asp-action="Update" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">@Localizer["Name"]</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label">@Localizer["Description"]</label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Discount" class="control-label">@Localizer["Discount"]</label>
+        <input asp-for="Discount" class="form-control" />
+        <span asp-validation-for="Discount" class="text-danger"></span>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ExistingImage))
+    {
+        <div class="form-group">
+            <label class="control-label" style="font-weight:bold;">@Localizer["Existing Image"]</label>
+            <div>
+                <img src="data:image;base64,@Model.ExistingImage" style="max-width: 100%; height: auto;" />
+            </div>
+        </div>
+    }
+
+    <div class="form-group">
+        <label asp-for="NewImage" class="control-label" style="font-weight:bold;">@Localizer["Upload New Image"]</label>
+        <input type="file" asp-for="NewImage" class="form-control" style="border-radius:5px;" />
+        <span asp-validation-for="NewImage" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartDate" class="control-label">@Localizer["Start Date"]</label>
+        <input asp-for="StartDate" class="form-control" type="datetime-local" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EndDate" class="control-label">@Localizer["End Date"]</label>
+        <input asp-for="EndDate" class="form-control" type="datetime-local" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedProducts" class="control-label" style="font-weight:bold;">@Localizer["Products"]</label>
+        <div>
+            @if (Model.Products != null && Model.SelectedProducts != null)
+            {
+                @foreach (var item in Model.Products)
+                {
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="SelectedProducts" value="@item.Value" @(Model.SelectedProducts.Contains(Guid.Parse(item.Value)) ? "checked" : "") /> @item.Text
+                        </label>
+                    </div>
+                }
+            }
+        </div>
+        <span asp-validation-for="SelectedProducts" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+</form> *@
+
+@model RestaurantApp.UI.Areas.Admin.Models.CampaignVMs.AdminCampaignUpdateVM
+
+
+
+<form method="post" asp-action="Update" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Discount" class="control-label"></label>
+        <input asp-for="Discount" class="form-control" />
+        <span asp-validation-for="Discount" class="text-danger"></span>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ExistingImage))
+    {
+        <div class="form-group">
+            <label class="control-label" style="font-weight:bold;">Existing Image</label>
+            <div>
+                <img src="data:image;base64,@Model.ExistingImage" style="max-width: 100%; height: auto;" />
+            </div>
+        </div>
+    }
+
+    <div class="form-group">
+        <label asp-for="NewImage" class="control-label" style="font-weight:bold;">Upload New Image</label>
+        <input type="file" asp-for="NewImage" class="form-control" style="border-radius:5px;" />
+        <span asp-validation-for="NewImage" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartDate" class="control-label"></label>
+        <input asp-for="StartDate" class="form-control" type="datetime-local" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EndDate" class="control-label"></label>
+        <input asp-for="EndDate" class="form-control" type="datetime-local" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedProducts" class="control-label" style="font-weight:bold;">Products</label>
+        <div>
+            @if (Model.Products != null && Model.SelectedProducts != null)
+            {
+                @foreach (var item in Model.Products)
+                {
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="SelectedProducts" value="@item.Value" @(Model.SelectedProducts.Contains(Guid.Parse(item.Value)) ? "checked" : "") /> @item.Text
+                        </label>
+                    </div>
+                }
+            }
+        </div>
+        <span asp-validation-for="SelectedProducts" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+

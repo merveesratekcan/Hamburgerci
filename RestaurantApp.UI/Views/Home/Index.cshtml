@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+
+@{
+    ViewData["Title"] = "Home Page";
+
+
+}
+
+@inject IHtmlLocalizer<ModelResource> Localizer;
+
+<div class="text-center">
+    <h1 class="display-4">@Localizer["Welcome Back!"]</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>

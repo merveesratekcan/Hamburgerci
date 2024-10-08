@@ -1,0 +1,142 @@
+﻿@using RestaurantApp.UI.Areas.Admin.Models.ProductIngredientVMs
+@model Dictionary<string, List<AdminProductIngredientListVM>>
+
+@{
+    ViewData["Title"] = "ProductIngredient List";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+
+                                            <h4 class="card-title">@Localizer["ProductIngredients"]</h4>
+                                            <p class="card-subtitle mb-4">
+                                                @Localizer["You can add new productIngredients, update or delete them."]
+                                            </p>
+
+                                            <div class="card-body text-center">
+                                                @foreach (var group in Model)
+                                                {
+                                                    <h3>@group.Key</h3>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                              @*   <th>@Localizer["ProductName"]</th> *@
+                                                                <th>@Localizer["IngredientName"]</th>
+                                                                <th>@Localizer["IsOptional"]</th>
+                                                                <th>@Localizer["IngredientPrice"]</th>
+                                                                <th>@Localizer["Actions"]</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in group.Value)
+                                                            {
+                                                                <tr>
+                                                                    @* <td>@Html.DisplayFor(modelItem => item.ProductName)</td> *@
+                                                                    <td>@Html.DisplayFor(modelItem => item.IngredientName)</td>
+                                                                    <td>
+                                                                        @if (item.IsOptional)
+                                                                        {
+                                                                            <input type="checkbox" checked="checked" disabled="disabled" />
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input type="checkbox" disabled="disabled" />
+                                                                        }
+                                                                    </td>
+                                                                    <td>@Html.DisplayFor(modelItem => item.IngredientPrice)</td>
+                                                                    <td>
+                                                                        <button class="btn btn-outline-success btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#updateModal" data-id="@item.Id" data-ingredientname="@item.IngredientName" data-productname="@item.ProductName" data-isoptional="@item.IsOptional" data-price="@item.IngredientPrice">@Localizer["Fiyat Güncelle"]</button>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                }
+
+                                                <!-- Update Modal -->
+                                                <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="updateModalLabel">@Localizer["Fiyat Güncelle"]</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @await Html.PartialAsync("/Areas/Admin/Views/AdminProductIngredient/Partials/_UpdatePartial.cshtml", new AdminProductIngredientUpdateVM())
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+       
+
+        // Update Modal içeriğini dinamik olarak yüklüyor
+        $('#updateModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+
+            $.get('@Url.Action("Update", "AdminProductIngredient", new { area = "Admin" })', { id: id }, function (data) {
+                $('#updateModal .modal-body').html(data);
+            });
+        });
+
+        // Update Modal kapandığında içeriği temizliyor
+        $('#updateModal').on('hidden.bs.modal', function () {
+            $('#updateModal .modal-body').html('');
+        });
+
+        // Update formunun ajax ile gönderiyor
+        $(document).on('submit', 'form[asp-action="Update"]', function (event) {
+            event.preventDefault();
+
+            var form = $(this);
+            var formData = new FormData(this);
+
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        $('#updateModal').modal('hide');
+                        location.reload(); // Sayfayı yeniden yükler
+                    } else {
+                        $('#updateModal .modal-body').html(response);
+                    }
+                }
+            });
+        });
+
+    </script>
+}

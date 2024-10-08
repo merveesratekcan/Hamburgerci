@@ -1,0 +1,86 @@
+﻿@model RestaurantApp.UI.Areas.Admin.Models.ProductVMs.ProductUpdateVM
+
+<form asp-action="Update" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+
+
+    @if (!string.IsNullOrEmpty(Model.ExistingImage))
+    {
+        <div class="form-group">
+            <label class="control-label" style="font-weight:bold;">Existing Image</label>
+            <div>
+                <img src="data:image;base64,@Model.ExistingImage" style="max-width: 100%; height: auto;" />
+            </div>
+        </div>
+    }
+
+    <div class="form-group">
+        <label asp-for="NewImage" class="control-label" style="font-weight:bold;">Upload New Image</label>
+        <input type="file" asp-for="NewImage" class="form-control" style="border-radius:5px;" />
+        <span asp-validation-for="NewImage" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <div class="input-group">
+            <input asp-for="Price" class="form-control" aria-describedby="priceHelp" />
+            <div class="input-group-append">
+                <span class="input-group-text">TL</span>
+            </div>
+        </div>
+        <span asp-validation-for="Price" class="text-danger"></span>
+        <small id="priceHelp" class="form-text text-muted">Lütfen fiyatı TL olarak giriniz.</small>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId" class="control-label">Categories</label>
+        <select asp-for="CategoryId" asp-items="@Model.Categories" class="form-control">
+            <option value="">---Select---</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+
+
+    <div class="form-group">
+        <label asp-for="Ingredients" class="control-label" style="font-weight:bold;">Ingredients</label>
+        <div>
+            @if (Model.Ingredients != null)
+            {
+                @for (int i = 0; i < Model.Ingredients.Count; i++)
+                {
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="Ingredients[@i].Selected" value="true" @(Model.Ingredients[i].Selected ? "checked" : "") /> @Model.Ingredients[i].IngredientName
+                            <input type="hidden" name="Ingredients[@i].Selected" value="false" />
+                            <input type="hidden" name="Ingredients[@i].IngredientId" value="@Model.Ingredients[i].IngredientId" />
+                            <input type="hidden" name="Ingredients[@i].IngredientName" value="@Model.Ingredients[i].IngredientName" />
+                            <input type="checkbox" name="Ingredients[@i].IsOptional" value="true" @(Model.Ingredients[i].IsOptional ? "checked" : "") /> Opsiyonel
+                            <input type="hidden" name="Ingredients[@i].IsOptional" value="false" />
+                        </label>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No ingredients available.</p>
+            }
+        </div>
+        <span asp-validation-for="Ingredients" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

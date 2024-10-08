@@ -1,0 +1,145 @@
+﻿
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transparent Navbar</title>
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%; /* Tam sayfa yüksekliği sağlar */
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.8); /* Yarı şeffaf beyaz arka plan */
+            color: black;
+            padding: 5px 20px; /* Daha ince padding */
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: flex-end; /* Sağa hizalama */
+        }
+
+        .dropdown-menu {
+            background-color: #333;
+            border: none;
+        }
+
+        .dropdown-item {
+            color: white;
+            padding: 8px 16px; /* Daha ince padding */
+        }
+
+            .dropdown-item:hover {
+                background-color: rgba(255, 99, 71, 0.7);
+            }
+
+        .header-item {
+            background: none;
+            border: none;
+            color: black;
+        }
+
+        #selectLanguage img {
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .mdi {
+            font-size: 16px; /* Daha küçük ikon boyutu */
+        }
+
+        /* Sayfa içeriği navbar'ın altında başlamalı */
+        body {
+            padding-top: 40px; /* Daha az padding */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-inline-block" id="selectLanguage">
+                    <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="~/Admin/vertical/assets/images/flags/us.jpg" id="currentLanguageImage" height="16">
+                        <span class="d-none d-sm-inline-block ml-1" id="currentLanguageText"></span>
+                        <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a data-value="en" class="dropdown-item notify-item language-option">
+                            <img src="~/Admin/vertical/assets/images/flags/us.jpg" alt="user-image" class="mr-1" height="12"> <span class="align-middle">@Localizer["English"]</span>
+                        </a>
+                        <a data-value="tr" class="dropdown-item notify-item language-option">
+                            <img src="~/Admin/vertical/assets/images/flags/turkey.png" alt="user-image" class="mr-1" height="12"> <span class="align-middle">@Localizer["Turkish"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @await Component.InvokeAsync("Notyf")
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            updateLanguageDisplay();
+
+            var languageOptions = document.querySelectorAll('.language-option');
+            languageOptions.forEach(function (option) {
+                option.addEventListener('click', function () {
+                    var selectedCulture = this.getAttribute('data-value');
+                    document.cookie = ".AspNetCore.Culture=c=" + selectedCulture + "|uic=" + selectedCulture + ";path=/";
+                    location.reload();
+                });
+            });
+        });
+
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift().split('|')[0].split('=')[1];
+        }
+
+        function updateLanguageDisplay() {
+            var currentCulture = getCookie(".AspNetCore.Culture") || "en";
+            var languageText = document.getElementById('currentLanguageText');
+            var languageImage = document.getElementById('currentLanguageImage');
+            var englishOption = document.querySelector('.language-option[data-value="en"]');
+            var turkishOption = document.querySelector('.language-option[data-value="tr"]');
+
+            if (currentCulture === 'tr') {
+                languageImage.src = '/Admin/vertical/assets/images/flags/turkey.png';
+
+                englishOption.style.display = 'block';
+                turkishOption.style.display = 'none';
+            } else {
+                languageImage.src = '/Admin/vertical/assets/images/flags/us.jpg';
+
+                englishOption.style.display = 'none';
+                turkishOption.style.display = 'block';
+            }
+        }
+    </script>
+
+    @await Component.InvokeAsync("CustomNotyf")
+
+</body>
+</html>

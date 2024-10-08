@@ -1,0 +1,77 @@
+﻿@model RestaurantApp.UI.Models.LoginVM
+@using Microsoft.Extensions.Options
+@using RestaurantApp.Domain.Entities.GoogleCaptchas
+
+@{
+	ViewData["Title"] = "Login";
+	Layout = "~/Views/MainLayout/_MainLayout.cshtml";
+}
+@inject IOptions<GoogleCaptchaConfig> GoogleCaptchaConfig
+
+</div>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Form-v6 by Colorlib</title>
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- Font-->
+	<link rel="stylesheet" type="text/css" href="~/colorlib-regform-32/css/nunito-font.css">
+	<!-- Main Style Css -->
+	<link rel="stylesheet" href="~/colorlib-regform-32/css/style.css" />
+</head>
+<body class="form-v6">
+	<div class="page-content">
+		<div class="form-v6-content">
+			<div class="form-left">
+				<img src="~/colorlib-regform-32/images/login.png" alt="form">
+			</div>
+			<form asp-controller="AppUserAccount" asp-action="Login" class="form-detail" method="post" id="loginForm" class="signin-form">
+				<input type="hidden" id="LoginVMToken" asp-for="Token" />
+
+				<h2>Login Form</h2>			
+				<div class="form-row">
+					<input asp-for="Email" type="email" id="your-email" class="input-text" placeholder="Email Address" required >
+				</div>
+				<div class="form-row">
+					<input asp-for="Password" type="password" name="Password" id="password" class="input-text" placeholder="Password" required>
+				</div>
+				<div class="form-row-last">
+					<input type="submit" name="register" class="register" value="Login">
+				</div>
+				<div class="form-row-last">
+					<p class="signup-link" style="text-align: center; margin-top: 20px; color: navy;">
+						Need an account?
+						<a asp-controller="AppUserAccount" asp-action="Register" style="display: inline-block; padding: 10px 20px; font-size: 16px; font-weight: bold; color: white; background-color: navy; border: none; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
+							Register
+						</a>
+					</p>
+				</div>
+			</form>
+		</div>
+	</div>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
+<script src="~/Admin/vertical/assets/js/jquery.min.js"></script>
+<script src="~/Admin/vertical/assets/js/bootstrap.bundle.min.js"></script>
+<script src="~/Admin/vertical/assets/js/metismenu.min.js"></script>
+<script src="~/Admin/vertical/assets/js/waves.js"></script>
+<script src="~/Admin/vertical/assets/js/simplebar.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=@GoogleCaptchaConfig.Value.SiteKey"></script>
+
+<script>
+	$(function () {
+
+		grecaptcha.ready(function () {
+			grecaptcha.execute('@GoogleCaptchaConfig.Value.SiteKey', { action: 'submit' }).then(function (token) {
+				// Add your logic to submit to your backend server here.
+				console.log(token);
+				document.getElementById("LoginVMToken").value = token;
+			});
+		});
+	});
+
+</script>
+

@@ -1,0 +1,68 @@
+﻿@using RestaurantApp.UI.Areas.Admin.Models.ContactVMs
+@model IEnumerable<AdminContactListVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/MainLayout/_MainLayout.cshtml";
+}
+</div>
+
+<section class="book_section layout_padding">
+    <div class="container">
+
+       
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <div class="heading_container">
+                        <h2>
+                            Contact
+                        </h2>
+                    </div>
+                    <br />
+                    <br />
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>                                
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ContactLocation)
+                                </td>
+                                <br />
+                                <br />
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ContactNumber)
+                                </td>
+                                <br />
+                                <br />
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ContactMail)
+                                </td>
+                                <br />
+                                <br />
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ContactFooterDescription)
+                                </td>
+                              
+                            </tr>
+                        }
+                    </tbody>                   
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="map_container">                   
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3060.4379395265914!2d32.7617631764943!3d39.90921468637136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d3462b5b8ecec9%3A0x85e22ef6bfc8f528!2sMaidan%20Avm!5e0!3m2!1str!2sde!4v1723403514209!5m2!1str!2sde" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Harita boyutlarını belirle -->
+<style>
+    #map {
+        width: 100%;
+        height: 400px;
+    }
+</style>
+

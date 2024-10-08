@@ -1,0 +1,116 @@
+﻿@model IEnumerable<RestaurantApp.UI.Areas.Admin.Models.ContactVMs.AdminContactListVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="card-body text-center">
+                                                <h4 class="card-title"> @Localizer["Contact"]</h4>
+                                                @* <p class="card-subtitle mb-4">
+                                                    @Localizer["You can add new contact, update or delete them."]
+                                                </p> *@
+                                               @*  <p>
+                                                    <a asp-controller="AdminContact" asp-action="Create" asp-area="Admin" type="button" class="btn btn-outline-info btn-lg btn-block waves-effect waves-light">
+                                                        @Localizer["Create New"]
+                                                    </a>
+                                                </p> *@
+                                                <table class="table mb-0">
+                                                    <thead>
+
+                                                    <th>
+                                                            @Html.DisplayNameFor(model => model.ContactLocation)
+                                                    </th>
+                                                    <th>
+                                                            @Html.DisplayNameFor(model => model.ContactNumber)
+                                                    </th>
+                                                    <th>
+                                                            @Html.DisplayNameFor(model => model.ContactMail)
+                                                    </th>
+                                                    <th>
+                                                            @Html.DisplayNameFor(model => model.ContactFooterDescription)
+                                                    </th>
+
+                                                <th></th>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.ContactLocation)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.ContactNumber)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.ContactMail)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.ContactFooterDescription)
+                                                                </td>
+                                                                <td>
+
+                                                                    <a href="@Url.Action("Update", new { id = item.Id })" type="button"
+                                                                       class="btn btn-outline-success btn-rounded waves-effect waves-light">
+                                                                        @Localizer["Update"]
+                                                                    </a>
+
+                                                                    <a href="@Url.Action("Delete", new { id = item.Id })" type="button"
+                                                                       class="btn btn-outline-danger btn-rounded waves-effect waves-light">
+                                                                        @Localizer["Delete"]
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll('.btn-outline-danger');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault(); // Form submitini engelle
+                const url = this.getAttribute('href');
+                if (confirm('Bu öğeyi silmek istediğinize emin misiniz?')) {
+                    fetch(url, {
+                        method: 'DELETE'
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            if (data.success) {
+                                window.location.reload(); // Sayfayı yenile
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,256 @@
+﻿@model IEnumerable<RestaurantApp.UI.Areas.Admin.Models.AppUserVMs.AdminAppUserListVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<h1>Index</h1>
+
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <h4 class="card-title"> @Localizer["AppUsers"]</h4>
+                                            <p class="card-subtitle mb-4">
+                                                @Localizer["You can add new User, update or delete them."]
+                                            </p>
+                                            <p>
+                                                <a asp-controller="AdminAppUser" asp-action="Create" asp-area="Admin" type="button" data-toggle="modal" data-target="#createModal" class="btn btn-outline-info btn-lg btn-block waves-effect waves-light">
+                                                    @Localizer["Create New"]
+                                                </a>
+                                            </p>
+                                            <div class="card-body text-center">
+                                                <p>
+                                                    <a asp-action="Create">Create New</a>
+                                                </p>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                @Html.DisplayNameFor(model => model.FirstName)
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayNameFor(model => model.LastName)
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayNameFor(model => model.Email)
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayNameFor(model => model.Addresses)
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayNameFor(model => model.ContactNumber)
+                                                            </th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.FirstName)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.LastName)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.Email)
+                                                                </td>
+                                                                <td>
+                                                                    @if (item.Addresses != null && item.Addresses.Any())
+                                                                    {
+                                                                        <ul>
+                                                                            @foreach (var address in item.Addresses)
+                                                                            {
+                                                                                <li>@Html.DisplayFor(modelItem => address)</li>
+                                                                            }
+                                                                        </ul>
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.ContactNumber)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.ActionLink("Update", "Update", new { id = item.Id }) |
+                                                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* @using RestaurantApp.UI.Areas.Admin.Models.AppUserVMs
+@model IEnumerable<RestaurantApp.UI.Areas.Admin.Models.AppUserVMs.AdminAppUserListVM>
+@{
+    ViewData["Title"] = "AppUser List";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+
+                                            <h4 class="card-title"> @Localizer["AppUsers"]</h4>
+                                            <p class="card-subtitle mb-4">
+                                                @Localizer["You can add new User, update or delete them."]
+                                            </p>
+                                            <p>
+                                                <a asp-controller="AdminAppUser" asp-action="Create" asp-area="Admin" type="button" data-toggle="modal" data-target="#createModal" class="btn btn-outline-info btn-lg btn-block waves-effect waves-light">
+                                                    @Localizer["Create New"]
+                                                </a>
+                                            </p>
+
+                                            <div class="card-body text-center">
+
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>@Localizer["Name"]</th>
+                                                            <th>@Localizer["Actions"]</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var appUser in Model)
+                                                        {
+                                                            <tr>
+                                                                <td>@appUser.FirstName</td>
+                                                                <td>@appUser.LastName</td>
+                                                                <td>@appUser.Email</td>
+                                                                <td>@appUser.ContactNumber</td>
+                                                                <td>@foreach(var address in appUser.Addresses)
+                                                                    {
+                                                                        <tr>
+                                                                            @address
+                                                                        </tr>
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                            <button class="btn btn-outline-success btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#updateModal" data-id="@appUser.Id" data-firstname="@appUser.FirstName" data-lastname="@appUser.LastName" data-email="@appUser.Email" data-contactnumber="@appUser.ContactNumber" data-addresses="@appUser.Addresses">@Localizer["Update"]</button>
+                                                            <button class="btn btn-outline-danger btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#deleteModal" data-id="@appUser.Id">@Localizer["Delete"]</button>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+
+                                                <!-- Create Modal -->
+                                                <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="createModalLabel">@Localizer["Create"]</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @await Html.PartialAsync("/Areas/Admin/Views/AdminAppUser/Partials/_CreatePartial.cshtml", new AdminAppUserCreateVM())
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Update Modal -->
+                                                <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="updateModalLabel">@Localizer["Update"]</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @await Html.PartialAsync("/Areas/Admin/Views/AdminAppUser/Partials/_UpdatePartial.cshtml", new AdminAppUserUpdateVM())
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Delete Modal -->
+                                                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteModalLabel">@Localizer["Delete Category"]</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form method="post" asp-action="Delete">
+                                                                    <input type="hidden" id="deleteCategoryId" name="Id" value="" />
+                                                                    <p>@Localizer["Are you sure you want to delete this category?"]</p>
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                                                                    <button type="submit" class="btn btn-danger">@Localizer["Delete"]</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#updateModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var name = button.data('name');
+            var modal = $(this);
+            modal.find('.modal-body #updateCategoryId').val(id);
+            modal.find('.modal-body #updateCategoryName').val(name);
+        });
+
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var modal = $(this);
+            modal.find('.modal-body #deleteCategoryId').val(id);
+        });
+    </script>
+}
+ *@

@@ -1,0 +1,77 @@
+﻿@using RestaurantApp.UI.Areas.Admin.Models.AboutVMs
+@model IEnumerable<AdminAboutListVM>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/MainLayout/_MainLayout.cshtml";
+}
+</div>
+<section class="about_section layout_padding">
+    <div class="container  ">
+
+        <div class="row">
+            <div class="col-md-6 ">
+                <div class="video-box">
+                    <video width="100%" controls>
+                        <source src="~/feane-1.0.0/audio/video.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="detail-box">
+                    
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>                               
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <br />
+                                <br />
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>                               
+                            </tr>
+                        }
+                    </tbody>
+                    @* <p>
+                       
+                        <br />
+                        Welcome to Melody Burger, where the Symphony of Flavor plays! At Melody Burger, we are dedicated to serving the most delicious hamburgers that will make your taste buds dance. Our menu is a harmonious blend of juicy burgers, crispy fries, refreshing drinks, delectable sauces, and delightful desserts.
+                        <br />
+                        Every bite you take at Melody Burger is crafted with the freshest ingredients and a passion for perfection. Our chefs are like conductors, orchestrating the perfect meal that leaves you craving for more. Whether you're grabbing a quick bite or enjoying a meal with friends and family, we aim to provide an unforgettable dining experience.
+                        <br />
+                        Thank you for choosing Melody Burger. Join us and experience the symphony of flavors that we have to offer!
+                    </p>
+                    <a href="">
+
+                        Order now
+                    </a> *@
+                </div>
+            </div>
+          
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="img-box">
+            <img src="~/feane-1.0.0/images/about-img.png" alt="">
+            
+        </div>
+   
+    </div>
+</section>
+</div>
+
+@* 
+                        Biz Melody Burger’iz
+
+Lezzetin Senfonisinin çaldığı yer olan Melody Burger’e hoş geldiniz! Melody Burger olarak, damak tadınızı dans ettirecek en lezzetli hamburgerleri sunmaya kendimizi adadık. Menümüz, sulu hamburgerlerin, çıtır kızartmaların, ferahlatıcı içeceklerin, enfes sosların ve nefis tatlıların uyumlu bir karışımıdır.
+
+Melody Burger'deki her lokma, en taze malzemeler ve mükemmellik tutkusu ile hazırlanır. Şeflerimiz, sizi daha fazlasını arzulayacağınız mükemmel bir öğünü yöneten orkestra şefleri gibidir. İster hızlı bir atıştırmalık alın, ister arkadaşlarınız ve ailenizle bir yemek keyfi yapın, unutulmaz bir yemek deneyimi sunmayı hedefliyoruz.
+
+Melody Burger’i seçtiğiniz için teşekkür ederiz. Bizimle olun ve sunduğumuz lezzetlerin senfonisini deneyimleyin! *@

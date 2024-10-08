@@ -1,0 +1,98 @@
+﻿@model IEnumerable<RestaurantApp.UI.Areas.Admin.Models.AboutVMs.AdminAboutListVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="card-body text-center">
+                                                <h4 class="card-title"> @Localizer["AboutUs"]</h4>
+                                               @*  <p class="card-subtitle mb-4">
+                                                    @Localizer["You can add new about, update or delete them."]
+                                                </p>
+                                                <p>
+                                                    <a asp-controller="AdminAbout" asp-action="Create" asp-area="Admin" type="button" class="btn btn-outline-info btn-lg btn-block waves-effect waves-light">
+                                                        @Localizer["Create New"]
+                                                    </a>
+                                                </p> *@
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>                                                           
+                                                            <th>
+                                                                @Localizer["Title"]
+                                                            </th>
+                                                            <th>
+                                                                @Localizer["Description"]
+                                                            </th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>                                                                
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.Title)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.Description)
+                                                                </td>
+                                                                <td>
+                                                                    <a href="@Url.Action("Update", new { id = item.Id })" type="button"
+                                                                       class="btn btn-outline-success btn-rounded waves-effect waves-light">
+                                                                        @Localizer["Update"]
+                                                                    </a>
+
+                                                                   
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll('.btn-outline-danger');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault(); // Form submitini engelle
+                const url = this.getAttribute('href');
+                if (confirm('Bu öğeyi silmek istediğinize emin misiniz?')) {
+                    fetch(url, {
+                        method: 'DELETE'
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            if (data.success) {
+                                window.location.reload(); // Sayfayı yenile
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+    });
+</script> *@

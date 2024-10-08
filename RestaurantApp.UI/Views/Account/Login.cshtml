@@ -1,0 +1,224 @@
+﻿@model RestaurantApp.UI.Models.LoginVM
+@using Microsoft.Extensions.Options
+@using RestaurantApp.Domain.Entities.GoogleCaptchas
+
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IOptions<GoogleCaptchaConfig> GoogleCaptchaConfig
+@inject IHtmlLocalizer<ModelResource> Localizer;
+
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title> Admin & Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="MyraStudio" name="author" />
+    <meta http-equiv="MelodyBurger" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Admin/vertical/assets/images/favicon.ico">
+
+    <!-- App css -->
+    <link href="~/Admin/vertical/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Admin/vertical/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Admin/vertical/assets/css/theme.min.css" rel="stylesheet" type="text/css" />
+
+
+
+</head>
+
+<body>
+
+
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex align-items-center min-vh-100">
+                        <div class="w-100 d-block bg-white shadow-lg rounded my-5">
+
+                            <div class="row">
+                                <div class="col-lg-5 d-none d-lg-block bg-login rounded-left">
+                                    <img src="~/Admin/img/eb0517b123.jpg" alt="Login Image" class="img-fluid rounded-left" style="height: 100%; width: 100%; object-fit: cover;">
+                                </div>
+
+
+
+                                <div class="col-lg-7">
+                                    <div class="p-5">
+
+                                        <h1 class="h4 mb-1">@Localizer["MELODYBURGER ADMIN PANEL"]</h1>
+                                        <h1 class="h5 mb-1">@Localizer["Welcome Back!"]</h1>
+                                        <p class="text-muted mb-4">@Localizer["Enter your email address and password to access admin panel."]</p>
+
+
+
+                                        <form asp-action="Login" method="post" class="signin-form" id="loginForm">
+                                            <input type="hidden" id="LoginVMToken" asp-for="Token" />
+                                            <div class="form-group">
+                                                @* <input type="hidden" asp-for="Id" /> *@
+                                            </div>
+                                            <div class="form-group position-relative">
+                                                <input asp-for="Email" class="form-control form-control-user" id="emailInput" placeholder="@Localizer["Email Address"]">
+                                                <div class="position-absolute icon-container">
+                                                    <i class="feather-at-sign"></i>
+                                                </div>
+                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="form-group position-relative">
+                                                <input asp-for="Password" type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="@Localizer["Password"]">
+                                                <div class="position-absolute icon-container">
+                                                    <i class="feather-eye" id="togglePassword"></i>
+                                                    <i class="feather-eye-off d-none" id="togglePasswordOff"></i>
+                                                </div>
+                                                <span asp-validation-for="Password" class="text-danger"></span>
+                                            </div>
+
+                                            @if (TempData["ErrorMessage"] != null)
+                                            {
+                                                <div class="alert alert-danger mt-2">@TempData["ErrorMessage"]</div>
+                                            }
+
+                                            <div class="form-group form-check">
+                                                <input asp-for="RememberMe" class="form-check-input" id="rememberMeCheckbox" />
+                                                <label asp-for="RememberMe" class="form-check-label">@Localizer["Remember Me"]</label>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary" id="loginButton">@Localizer["Login"]</button>
+                                        </form>
+                                        <div class="row mt-4">
+                                            <div class="col-12 text-center">
+                                                <p class="text-muted mb-2"><a asp-controller="Password" asp-action="ForgotPassword" class="text-muted font-weight-medium ml-1">@Localizer["Forgot your password?"]</a></p>
+                                                <a href="@Url.Action("Index","DefaultMain")">@Localizer["Return to Melody Main Page"]</a>
+                                            </div> <!-- end col -->
+                                        </div>
+                                        <!-- end row -->
+                                    </div> <!-- end .padding-5 -->
+                                </div> <!-- end col -->
+                            </div> <!-- end row -->
+                        </div> <!-- end .w-100 -->
+                    </div> <!-- end .d-flex -->
+                </div> <!-- end col-->
+            </div> <!-- end row -->
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end page -->
+    <!-- jQuery  -->
+    <script src="~/Admin/vertical/assets/js/jquery.min.js"></script>
+    <script src="~/Admin/vertical/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Admin/vertical/assets/js/metismenu.min.js"></script>
+    <script src="~/Admin/vertical/assets/js/waves.js"></script>
+    <script src="~/Admin/vertical/assets/js/simplebar.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=@GoogleCaptchaConfig.Value.SiteKey"></script>
+
+    <script>
+        $(function () {
+
+            grecaptcha.ready(function () {
+                grecaptcha.execute('@GoogleCaptchaConfig.Value.SiteKey', { action: 'submit' }).then(function (token) {
+                    // Add your logic to submit to your backend server here.
+                    console.log(token);
+                    document.getElementById("LoginVMToken").value = token;
+                });
+            });
+        });
+
+    </script>
+
+    <style>
+        .icon-container {
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .position-relative {
+            position: relative;
+        }
+
+        .position-absolute {
+            position: absolute;
+        }
+    </style>
+    @section Scripts {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Sayfa yüklendiğinde e-posta ve şifreyi localStorage'dan yükleyin
+                var emailInput = document.getElementById('emailInput');
+                var exampleInputPassword = document.getElementById('exampleInputPassword');
+                var rememberMeCheckbox = document.getElementById('rememberMeCheckbox');
+
+                if (localStorage.getItem('rememberMe') === 'true') {
+                    emailInput.value = localStorage.getItem('email') || '';
+                    exampleInputPassword.value = localStorage.getItem('password') || '';
+                    rememberMeCheckbox.checked = true;
+                }
+
+                var loginForm = document.getElementById('loginForm');
+                loginForm.addEventListener('submit', function () {
+                    if (rememberMeCheckbox.checked) {
+                        localStorage.setItem('email', emailInput.value);
+                        localStorage.setItem('password', exampleInputPassword.value);
+                        localStorage.setItem('rememberMe', true);
+                    } else {
+                        localStorage.removeItem('email');
+                        localStorage.removeItem('password');
+                        localStorage.setItem('rememberMe', false);
+                    }
+                });
+            });
+        </script>
+    }
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordField = document.getElementById('exampleInputPassword');
+            const togglePassword = document.getElementById('togglePassword');
+            const togglePasswordOff = document.getElementById('togglePasswordOff');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                togglePassword.classList.add('d-none');
+                togglePasswordOff.classList.remove('d-none');
+            } else {
+                passwordField.type = 'password';
+                togglePassword.classList.remove('d-none');
+                togglePasswordOff.classList.add('d-none');
+            }
+        });
+
+        document.getElementById('togglePasswordOff').addEventListener('click', function () {
+            const passwordField = document.getElementById('exampleInputPassword');
+            const togglePassword = document.getElementById('togglePassword');
+            const togglePasswordOff = document.getElementById('togglePasswordOff');
+
+            if (passwordField.type === 'text') {
+                passwordField.type = 'password';
+                togglePassword.classList.remove('d-none');
+                togglePasswordOff.classList.add('d-none');
+            }
+        });
+    </script>
+
+
+    <!-- App js -->
+    <script src="~/assets/js/theme.js"></script>
+
+
+
+
+</body>
+
+
+
+</html>

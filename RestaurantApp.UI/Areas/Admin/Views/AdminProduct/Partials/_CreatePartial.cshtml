@@ -1,0 +1,62 @@
+﻿@model RestaurantApp.UI.Areas.Admin.Models.ProductVMs.ProductCreateVM
+
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label asp-for="NewImage" class="control-label" style="font-weight:bold;">Resim</label>
+        <input type="file" asp-for="NewImage" class="form-control" style="border-radius:5px;" />
+        <span asp-validation-for="NewImage" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="CategoryId" class="control-label"></label>
+        <select asp-for="CategoryId" asp-items="Model.Categories" class="form-control">
+            <option value="">---Select---</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+
+    <div>
+        @if (Model.Ingredients != null)
+        {
+            @for (int i = 0; i < Model.Ingredients.Count; i++)
+            {
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" asp-for="Ingredients[i].Selected" /> @Model.Ingredients[i].IngredientName
+                        <input type="checkbox" asp-for="Ingredients[i].IsOptional" /> Opsiyonel
+                        <input type="hidden" asp-for="Ingredients[i].IngredientId" />
+                        <input type="hidden" asp-for="Ingredients[i].IngredientName" />
+                    </label>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No ingredients available.</p>
+        }
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>

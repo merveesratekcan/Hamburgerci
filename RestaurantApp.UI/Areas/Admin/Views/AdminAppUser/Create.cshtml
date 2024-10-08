@@ -1,0 +1,90 @@
+﻿@model RestaurantApp.UI.Areas.Admin.Models.AppUserVMs.AdminAppUserCreateVM
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<h1>Create</h1>
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <form asp-action="Create">
+                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                        <div class="form-group">
+                                                            <label asp-for="FirstName" class="control-label"></label>
+                                                            <input asp-for="FirstName" class="form-control" />
+                                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="LastName" class="control-label"></label>
+                                                            <input asp-for="LastName" class="form-control" />
+                                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="Email" class="control-label"></label>
+                                                            <input asp-for="Email" class="form-control" />
+                                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="ContactNumber" class="control-label"></label>
+                                                            <input asp-for="ContactNumber" class="form-control" />
+                                                            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                                                        </div>
+                                                        <h4>Addresses</h4>
+                                                        <div id="address-container">
+                                                            <div class="form-group">
+                                                                <label asp-for="Addresses" class="control-label"></label>
+                                                                <input name="Addresses[0].Address" class="form-control" />
+                                                                <span asp-validation-for="Addresses" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="button" value="Add Address" class="btn btn-secondary" onclick="addAddressField()" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="submit" value="Create" class="btn btn-primary" />
+                                                        </div>
+                                                    </form>
+                                                    <div>
+                                                        <a asp-action="Index">Back to List</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        function addAddressField() {
+            var container = document.getElementById("address-container");
+            var index = container.children.length;
+            var newField = document.createElement("div");
+            newField.className = "form-group";
+            newField.innerHTML = '<label asp-for="Addresses" class="control-label"></label>' +
+                '<input name="Addresses[' + index + '].Address" class="form-control" />' +
+                '<span asp-validation-for="Addresses" class="text-danger"></span>';
+            container.appendChild(newField);
+        }
+    </script>
+}
